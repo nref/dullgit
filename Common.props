@@ -1,0 +1,8 @@
+﻿<Project>
+  <PropertyGroup>
+    <WarningLevel>4</WarningLevel>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <ErrorReport>prompt</ErrorReport>
+    <LangVersion>9.0</LangVersion>
+  </PropertyGroup>
+</Project>
