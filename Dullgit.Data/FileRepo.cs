@@ -33,11 +33,9 @@ namespace Dullgit.Data
           string blob = new BlobObject(filtered).Value;
 
           string hash = Hash(Encoding.GetBytes(blob));
+          string[] split = hash.Split(2);
 
-          string two = hash.Substring(0, 2);
-          string rest = hash.Substring(2, hash.Length - 2);
-
-          await FileExtensions.WriteFileAsync($"{Dir}/objects/{two}/{rest}", data);
+          await FileExtensions.WriteFileAsync($"{Dir}/objects/{split[0]}/{split[1]}", data);
 
           return hash;
         })
