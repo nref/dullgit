@@ -2,7 +2,7 @@
   "profiles": {
     "Dullgit.App": {
       "commandName": "Project",
-      "commandLineArgs": "hash asdf.txt"
+      "commandLineArgs": "hash-object bla.txt"
     }
   }
 }

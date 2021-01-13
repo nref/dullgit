@@ -6,6 +6,6 @@
   /// </summary>
   public class GitObject
   {
-    public string Value { get; protected set; }
+    public virtual string Value { get; protected set; }
   }
 }

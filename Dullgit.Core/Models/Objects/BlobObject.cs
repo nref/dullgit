@@ -2,21 +2,16 @@
 {
   public class BlobObject : GitObject
   {
+    private readonly string _content;
+    private string Header => $"blob {_content.Length}\0";
+    public override string Value => $"{Header}{_content}";
+
     /// <summary>
-    /// Compute the header for the given string. autocrlf replaces \r\n with \n.
+    /// Compute the header for the given string.
     /// </summary>
-    public BlobObject(string data, bool autocrlf = true)
+    public BlobObject(string content)
     {
-      string filtered = data == default
-        ? string.Empty
-        : data;
-
-      if (autocrlf)
-      {
-        filtered = data.Replace("\r\n", "\n");
-      }
-
-      Value = $"blob {filtered.Length}\0{filtered}";
+      _content = content;
     }
   }
 }

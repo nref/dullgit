@@ -28,19 +28,25 @@ namespace Dullgit.Tests.Dullgit.Data.FileRepoFixtures
     public const string AsdfHash = "5e40c0877058c504203932e5136051cf3cd3519b";
 
     /// <summary>
-    /// From git hash-object of a file containing "\r\n" with autocrlf = true
+    /// From git hash-object of a file containing "\r\n" with autocrlf = false
     /// </summary>
-    public const string CrlfHash = "8b137891791fe96927ad78e64b0aad7bded08bdc";
+    public const string CrlfHash = "d3f5a12faa99758192ecc4ed3fc22c9249232e86";
 
     /// <summary>
-    /// From git hash-object of a file containing "asdf\r\n" with autocrlf = true
+    /// From git hash-object of a file containing "asdf\r\n" with autocrlf = false
     /// </summary>
-    public const string AsdfcrlfHash = "8bd6648ed130ac9ece0f89cd9a8fbbfd2608427a";
+    public const string AsdfCrlfHash = "a98bf3503443ea6a69779fef1f6204fdae913124";
+
+    /// <summary>
+    /// From git hash-object of a file containing "asdf\n"
+    /// </summary>
+    public const string AsdfLfHash = "8bd6648ed130ac9ece0f89cd9a8fbbfd2608427a";
 
     [TestCase(EmptyFileHash, "")]
     [TestCase(AsdfHash, "asdf")]
     [TestCase(CrlfHash, "\r\n")]
-    [TestCase(AsdfcrlfHash, "asdf\r\n")]
+    [TestCase(AsdfCrlfHash, "asdf\r\n")]
+    [TestCase(AsdfLfHash, "asdf\n")]
     public async Task EqualsKnownHash(string expectedHash, string contents)
     {
       string path = $"testdata/HashMethod/EqualsKnownHash/{Guid.NewGuid()}.txt";

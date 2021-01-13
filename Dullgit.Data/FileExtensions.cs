@@ -21,15 +21,20 @@ namespace Dullgit.Data
     /// Read the contents from the file at the given path with the given Encoding.
     /// Then call the given Func.
     /// </summary>
-    public static async Task<T> ReadFileAsync<T>(this string path, Encoding encoding, Func<string, T> f)
+    public static async Task<T> ReadFileAsync<T>(this string path, Encoding encoding, Func<string, Task<T>> f)
     {
+      string data;
       try
       {
-        using var reader = encoding == default 
-          ? new StreamReader(path) 
-          : new StreamReader(path, encoding);
+        {
+          using var reader = encoding == default
+            ? new StreamReader(path)
+            : new StreamReader(path, encoding);
 
-        return f(await reader.ReadToEndAsync().ConfigureAwait(false));
+          data = await reader.ReadToEndAsync().ConfigureAwait(false);
+        }
+
+        return await f(data);
       }
       catch (Exception)
       {
