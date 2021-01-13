@@ -3,9 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30711.63
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dullgit.Core", "Dullgit.Core\Dullgit.Core.csproj", "{3E12866D-435C-4C01-B3F6-FDB262C5A6BC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dullgit.Core", "Dullgit.Core\Dullgit.Core.csproj", "{3E12866D-435C-4C01-B3F6-FDB262C5A6BC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dullgit.App", "Dullgit.App\Dullgit.App.csproj", "{0A352416-0F8A-4ECD-84A8-B819973843DC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dullgit.App", "Dullgit.App\Dullgit.App.csproj", "{0A352416-0F8A-4ECD-84A8-B819973843DC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dullgit.Tests", "Dullgit.Tests\Dullgit.Tests.csproj", "{41DD5278-3D60-4188-AE89-7299F201F9F0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dullgit.Data", "Dullgit.Data\Dullgit.Data.csproj", "{CE8B2A56-89CE-4828-BF35-D7AF79FC6426}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +25,14 @@ Global
 		{0A352416-0F8A-4ECD-84A8-B819973843DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0A352416-0F8A-4ECD-84A8-B819973843DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0A352416-0F8A-4ECD-84A8-B819973843DC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{41DD5278-3D60-4188-AE89-7299F201F9F0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{41DD5278-3D60-4188-AE89-7299F201F9F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{41DD5278-3D60-4188-AE89-7299F201F9F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{41DD5278-3D60-4188-AE89-7299F201F9F0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CE8B2A56-89CE-4828-BF35-D7AF79FC6426}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CE8B2A56-89CE-4828-BF35-D7AF79FC6426}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CE8B2A56-89CE-4828-BF35-D7AF79FC6426}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CE8B2A56-89CE-4828-BF35-D7AF79FC6426}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
