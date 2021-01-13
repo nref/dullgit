@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Dullgit.Core\Dullgit.Core.csproj" />
+    <ProjectReference Include="..\Dullgit.Data\Dullgit.Data.csproj" />
   </ItemGroup>
 
 </Project>

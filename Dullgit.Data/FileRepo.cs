@@ -1,47 +1,30 @@
-﻿using System;
+﻿using Dullgit.Core;
+using Dullgit.Core.Models.Objects;
 using System.IO;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace Dullgit.Data
 {
-  public interface IRepo
-  {
-    string Dir { get; }
-    string FullPath { get; }
-
-    bool Exists();
-    Task<bool> InitAsync(CancellationToken ct = default);
-  }
-
   public class FileRepo : IRepo
   {
     public string Dir => ".dg";
     public string FullPath => Path.Combine(Directory.GetCurrentDirectory(), Dir);
+    public Encoding Encoding { get; set; } = Encoding.UTF8;
 
     public bool Exists() => Directory.Exists(FullPath);
 
+    public async Task<string> HashAsync(string path) 
+      => await FileExtensions
+        .ReadFileAsync(path, Encoding, data => Hash(Encoding.GetBytes(new BlobObject(data).Value)))
+        .ConfigureAwait(false);
+
+    private string Hash(byte[] data) => data.Hash().AsString();
+
     public async Task<bool> InitAsync(CancellationToken ct = default) 
-      => await Task.Run(() => CreateDirectorySafely(FullPath), ct);
-
-    private static bool CreateDirectorySafely(string path)
-    {
-      if (Directory.Exists(path))
-      {
-        Console.WriteLine($"{path} already exists");
-        return false;
-      }
-
-      try
-      {
-        Directory.CreateDirectory(path);
-        return true;
-      }
-      catch (Exception e)
-      {
-        Console.WriteLine(e);
-        return false;
-      }
-    }
+      => await Task
+        .Run(() => DirectoryExtensions.CreateSafely(FullPath), ct)
+        .ConfigureAwait(false);
   }
 }

@@ -20,7 +20,6 @@ namespace Dullgit.Tests.Dullgit.Core.CliFixtures
       var cli = new Cli(mock.Object);
 
       bool ok = await cli.InitAsync();
-
       mock.Verify(mock => mock.InitAsync(It.IsAny<CancellationToken>()), Times.Once);
     }
 

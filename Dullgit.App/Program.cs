@@ -10,7 +10,7 @@ namespace Dullgit.App
   {
     static async Task Main(string[] args)
     {
-      var cli = new Cli(new FileRepo());
+      ICli cli = new Cli(new FileRepo());
       var app = new CommandLineApplication
       {
         Name = "dullgit",
@@ -28,10 +28,24 @@ namespace Dullgit.App
       app.Command("init", config =>
       {
         config.Description = "Initialize a repository";
-        config.OnExecuteAsync(async ct => await cli.InitAsync(ct) ? 0 : 1);
+        config.OnExecuteAsync(async ct => await cli
+          .InitAsync(ct)
+          .ConfigureAwait(false) ? 0 : 1);
       });
 
-      await app.ExecuteAsync(args);
+      app.Command("hash", config =>
+      {
+        config.Description = "Compute a hash";
+        CommandArgument path = config.Argument("path", "File to hash").IsRequired();
+        config.OnExecuteAsync(async ct => await cli
+          .Hash(path.Value)
+          .ConfigureAwait(false) ? 0 : 1);
+      });
+
+
+      await app
+        .ExecuteAsync(args)
+        .ConfigureAwait(false);
     }
   }
 }

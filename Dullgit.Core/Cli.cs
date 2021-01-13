@@ -1,5 +1,4 @@
-﻿using Dullgit.Data;
-using System;
+﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -7,6 +6,7 @@ namespace Dullgit.Core
 {
   public interface ICli
   {
+    Task<bool> Hash(string path);
     Task<bool> InitAsync(CancellationToken ct = default);
   }
 
@@ -19,16 +19,24 @@ namespace Dullgit.Core
       _repo = repo;
     }
 
+    public async Task<bool> Hash(string path)
+    {
+      Log(await _repo.HashAsync(path).ConfigureAwait(false));
+      return await Task.FromResult(true).ConfigureAwait(false);
+    }
+
     public async Task<bool> InitAsync(CancellationToken ct = default)
     {
-      bool ok = await _repo.InitAsync();
+      bool ok = await _repo.InitAsync().ConfigureAwait(false);
 
       if (ok)
       {
-        Console.WriteLine($"Initalized dullgit repository in {_repo.FullPath}");
+        Log($"Initalized dullgit repository in {_repo.FullPath}");
       }
 
       return ok;
     }
+
+    private void Log(string message) => Console.WriteLine(message);
   }
 }
