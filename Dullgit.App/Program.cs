@@ -38,7 +38,16 @@ namespace Dullgit.App
         config.Description = "Compute a hash";
         CommandArgument path = config.Argument("path", "File to hash").IsRequired();
         config.OnExecuteAsync(async ct => await cli
-          .Hash(path.Value)
+          .HashAsync(path.Value)
+          .ConfigureAwait(false) ? 0 : 1);
+      });
+
+      app.Command("cat-object", config =>
+      {
+        config.Description = "Get object contents";
+        CommandArgument path = config.Argument("hash", "Object hash").IsRequired();
+        config.OnExecuteAsync(async ct => await cli
+          .CatAsync(path.Value)
           .ConfigureAwait(false) ? 0 : 1);
       });
 

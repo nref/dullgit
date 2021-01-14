@@ -6,7 +6,8 @@ namespace Dullgit.Core
 {
   public interface ICli
   {
-    Task<bool> Hash(string path);
+    Task<bool> CatAsync(string oid);
+    Task<bool> HashAsync(string path);
     Task<bool> InitAsync(CancellationToken ct = default);
   }
 
@@ -19,10 +20,20 @@ namespace Dullgit.Core
       _repo = repo;
     }
 
-    public async Task<bool> Hash(string path)
+    public async Task<bool> CatAsync(string oid)
     {
-      Log(await _repo.HashAsync(path).ConfigureAwait(false));
-      return await Task.FromResult(true).ConfigureAwait(false);
+      string content = await _repo.GetObjectAsync(oid);
+      Log(content);
+
+      return await Task.FromResult(content != default);
+    }
+
+    public async Task<bool> HashAsync(string path)
+    {
+      string oid = await _repo.HashAsync(path).ConfigureAwait(false);
+      Log(oid);
+
+      return await Task.FromResult(oid != default);
     }
 
     public async Task<bool> InitAsync(CancellationToken ct = default)

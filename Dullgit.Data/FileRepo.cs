@@ -1,9 +1,7 @@
 ﻿using Dullgit.Core;
 using Dullgit.Core.Models.Objects;
 using Dullgit.Data.Filters;
-using System;
 using System.IO;
-using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -27,19 +25,29 @@ namespace Dullgit.Data
 
     public async Task<string> HashAsync(string path) 
       => await FileExtensions
-        .ReadFileAsync(path, Encoding, async data =>
+        .ReadFileAsync(path, Encoding, async content =>
         {
-          string filtered = Filter(data);
+          string filtered = Filter(content);
           string blob = new BlobObject(filtered).Value;
 
-          string hash = Hash(Encoding.GetBytes(blob));
-          string[] split = hash.Split(2);
+          string oid = Hash(Encoding.GetBytes(blob));
+          string[] split = oid.Split(2);
 
-          await FileExtensions.WriteFileAsync($"{Dir}/objects/{split[0]}/{split[1]}", data);
+          await FileExtensions.WriteFileAsync($"{Dir}/objects/{split[0]}/{split[1]}", content);
 
-          return hash;
+          return oid;
         })
         .ConfigureAwait(false);
+
+    public async Task<string> GetObjectAsync(string oid)
+    {
+      string[] split = oid.Split(2);
+
+      return await FileExtensions.ReadFileAsync($"{Dir}/objects/{split[0]}/{split[1]}", Encoding, async blob =>
+      {
+        return await Task.FromResult(blob);
+      });
+    }
 
     private string Filter(string data)
     {
