@@ -42,7 +42,7 @@ namespace Dullgit.App
           .ConfigureAwait(false) ? 0 : 1);
       });
 
-      app.Command("cat-object", config =>
+      app.Command("cat-file", config =>
       {
         config.Description = "Get object contents";
         CommandArgument path = config.Argument("hash", "Object hash").IsRequired();

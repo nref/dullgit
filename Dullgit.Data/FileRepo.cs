@@ -23,30 +23,24 @@ namespace Dullgit.Data
 
     public bool Exists() => Directory.Exists(FullPath);
 
-    public async Task<string> HashAsync(string path) 
-      => await FileExtensions
-        .ReadFileAsync(path, Encoding, async content =>
-        {
-          string filtered = Filter(content);
-          string blob = new BlobObject(filtered).Value;
+    public async Task<string> HashAsync(string path)
+    {
+      string content = await FileExtensions.ReadFileAsync(path, Encoding).ConfigureAwait(false);
+      string filtered = Filter(content);
+      string blob = new BlobObject(filtered).Value;
 
-          string oid = Hash(Encoding.GetBytes(blob));
-          string[] split = oid.Split(2);
+      string oid = Hash(Encoding.GetBytes(blob));
+      string[] split = oid.Split(2);
 
-          await FileExtensions.WriteFileAsync($"{Dir}/objects/{split[0]}/{split[1]}", content);
+      await FileExtensions.WriteFileAsync($"{Dir}/objects/{split[0]}/{split[1]}", content);
 
-          return oid;
-        })
-        .ConfigureAwait(false);
+      return oid;
+    }
 
     public async Task<string> GetObjectAsync(string oid)
     {
       string[] split = oid.Split(2);
-
-      return await FileExtensions.ReadFileAsync($"{Dir}/objects/{split[0]}/{split[1]}", Encoding, async blob =>
-      {
-        return await Task.FromResult(blob);
-      });
+      return await FileExtensions.ReadFileAsync($"{Dir}/objects/{split[0]}/{split[1]}", Encoding);
     }
 
     private string Filter(string data)
