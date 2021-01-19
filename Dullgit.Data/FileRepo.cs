@@ -10,24 +10,26 @@ namespace Dullgit.Data
 {
   public class FileRepo : IRepo
   {
+    private readonly IObjectFactory _objectFactory;
     private readonly IContentFilter[] _filters;
 
     public string Dir => ".dg";
     public string FullPath => Path.Combine(Directory.GetCurrentDirectory(), Dir);
     public Encoding Encoding { get; set; } = Encoding.UTF8;
 
-    public FileRepo(params IContentFilter[] filters)
+    public FileRepo(IObjectFactory objectFactory, params IContentFilter[] filters)
     {
+      _objectFactory = objectFactory;
       _filters = filters;
     }
 
     public bool Exists() => Directory.Exists(FullPath);
 
-    public async Task<string> HashAsync(string path)
+    public async Task<string> HashAsync(string path, ObjectType type)
     {
       string content = await FileExtensions.ReadFileAsync(path, Encoding).ConfigureAwait(false);
       string filtered = Filter(content);
-      string blob = new BlobObject(filtered).Value;
+      string blob = _objectFactory.Create(type, filtered).Value;
 
       string oid = Hash(Encoding.GetBytes(blob));
       string[] split = oid.Split(2);
