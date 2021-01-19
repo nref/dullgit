@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Dullgit.Core;
+using Dullgit.Core.Models.Objects;
 using Dullgit.Data;
 using McMaster.Extensions.CommandLineUtils;
 
@@ -10,7 +11,7 @@ namespace Dullgit.App
   {
     static async Task Main(string[] args)
     {
-      ICli cli = new Cli(new FileRepo(new AutoCrlfFilter()));
+      ICli cli = new Cli(new FileRepo(new ObjectFactory(), new AutoCrlfFilter()));
       var app = new CommandLineApplication
       {
         Name = "dullgit",

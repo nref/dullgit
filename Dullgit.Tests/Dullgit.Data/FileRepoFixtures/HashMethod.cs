@@ -1,4 +1,5 @@
-﻿using Dullgit.Data;
+﻿using Dullgit.Core.Models.Objects;
+using Dullgit.Data;
 using FluentAssertions;
 using NUnit.Framework;
 using System;
@@ -52,7 +53,7 @@ namespace Dullgit.Tests.Dullgit.Data.FileRepoFixtures
       string path = $"testdata/HashMethod/EqualsKnownHash/{Guid.NewGuid()}.txt";
 
       await FileExtensions.WriteFileAsync(path, contents);
-      string hash = await new FileRepo().HashAsync(path);
+      string hash = await new FileRepo(new ObjectFactory()).HashAsync(path);
       File.Delete(path);
 
       hash.Should().Be(expectedHash);

@@ -7,5 +7,8 @@
   public class GitObject
   {
     public virtual string Value { get; protected set; }
+
+    public GitObject() { }
+
   }
 }

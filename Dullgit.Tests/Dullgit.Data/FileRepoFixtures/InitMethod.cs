@@ -1,4 +1,5 @@
-﻿using Dullgit.Data;
+﻿using Dullgit.Core.Models.Objects;
+using Dullgit.Data;
 using FluentAssertions;
 using NUnit.Framework;
 using System.IO;
@@ -16,7 +17,7 @@ namespace Dullgit.Tests.Dullgit.Data.FileRepoFixtures
     [SetUp]
     public void Setup()
     {
-      _repo = new FileRepo();
+      _repo = new FileRepo(new ObjectFactory());
       DirectoryExtensions.ForceDelete(_path);
       RepoAssertions.DoesNotExist(_path, _method);
     }

@@ -1,4 +1,5 @@
-﻿using Dullgit.Data;
+﻿using Dullgit.Core.Models.Objects;
+using Dullgit.Data;
 using FluentAssertions;
 using NUnit.Framework;
 using System.IO;
@@ -15,17 +16,18 @@ namespace Dullgit.Tests.Dullgit.Data.FileRepoFixtures
     [Test]
     public async Task GetsObject()
     {
-      string expected = "asdf";
+      string obj = "blob 5\0asdf";
       string path = $".dg/objects/{AsdfHash1}/{AsdfHash2}";
 
       // Arrange
-      await FileExtensions.WriteFileAsync(path, expected);
+      await FileExtensions.WriteFileAsync(path, obj);
 
       // Act
-      string content = await new FileRepo().GetObjectAsync($"{AsdfHash1}{AsdfHash2}");
+      string content = await new FileRepo(new ObjectFactory())
+        .GetObjectAsync($"{AsdfHash1}{AsdfHash2}");
 
       // Assert
-      content.Should().Be(expected);
+      content.Should().Be("asdf");
 
       // Cleanup
       File.Delete(path);

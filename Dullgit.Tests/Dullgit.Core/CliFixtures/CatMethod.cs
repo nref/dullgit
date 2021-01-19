@@ -1,4 +1,5 @@
 ﻿using Dullgit.Core;
+using Dullgit.Core.Models.Objects;
 using Moq;
 using NUnit.Framework;
 using System.Threading.Tasks;
@@ -19,7 +20,11 @@ namespace Dullgit.Tests.Dullgit.Core.CliFixtures
       const string hash = "8bd6648ed130ac9ece0f89cd9a8fbbfd2608427a";
 
       bool ok = await cli.CatAsync(hash);
-      mock.Verify(mock => mock.GetObjectAsync(It.Is<string>(s => s == hash)), Times.Once);
+      mock.Verify(
+        mock => mock.GetObjectAsync(
+          It.Is<string>(s => s == hash), 
+          It.IsAny<ObjectType>()), 
+        Times.Once);
     }
   }
 }

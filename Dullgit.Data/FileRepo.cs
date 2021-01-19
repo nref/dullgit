@@ -1,6 +1,7 @@
 ﻿using Dullgit.Core;
 using Dullgit.Core.Models.Objects;
 using Dullgit.Data.Filters;
+using System;
 using System.IO;
 using System.Text;
 using System.Threading;
@@ -25,24 +26,32 @@ namespace Dullgit.Data
 
     public bool Exists() => Directory.Exists(FullPath);
 
-    public async Task<string> HashAsync(string path, ObjectType type)
+    public async Task<string> HashAsync(string path, ObjectType type = ObjectType.Blob)
     {
       string content = await FileExtensions.ReadFileAsync(path, Encoding).ConfigureAwait(false);
       string filtered = Filter(content);
-      string blob = _objectFactory.Create(type, filtered).Value;
+      string obj = _objectFactory.Create(type, filtered).Value;
 
-      string oid = Hash(Encoding.GetBytes(blob));
+      string oid = Hash(Encoding.GetBytes(obj));
       string[] split = oid.Split(2);
 
-      await FileExtensions.WriteFileAsync($"{Dir}/objects/{split[0]}/{split[1]}", content);
+      await FileExtensions.WriteFileAsync($"{Dir}/objects/{split[0]}/{split[1]}", obj);
 
       return oid;
     }
 
-    public async Task<string> GetObjectAsync(string oid)
+    public async Task<string> GetObjectAsync(string oid, ObjectType expectedType = ObjectType.Blob)
     {
       string[] split = oid.Split(2);
-      return await FileExtensions.ReadFileAsync($"{Dir}/objects/{split[0]}/{split[1]}", Encoding);
+      string obj = await FileExtensions.ReadFileAsync($"{Dir}/objects/{split[0]}/{split[1]}", Encoding);
+
+      var po = new ParsedObject(obj);
+
+      if (po.Type != expectedType)
+      {
+        throw new ArgumentException($"Expected type {expectedType} but found {po.Type}");
+      }
+      return po.Content;
     }
 
     private string Filter(string data)
